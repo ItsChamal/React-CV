@@ -1,18 +1,114 @@
-import {useState} from'react'; import {useNavigate,Link} from'react-router-dom';
-import InputField from'../../components/InputField';
-export default function SignIn(){
-  const [email,setEmail]=useState(''); const[pwd,setPwd]=useState(''); const nav=useNavigate();
-  function submit(e){e.preventDefault(); localStorage.setItem('isSignedIn','yes'); nav('/dashboard');}
+
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import InputField from '../../components/InputField';
+import { Mail, Key, ArrowRight } from 'lucide-react';
+
+export default function SignIn() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // In a real app, handle authentication here
+    navigate('/dashboard');
+  };
+
   return (
-    <div className="max-w-sm mx-auto bg-white p-8 rounded-xl shadow-md">
-      <h1 className="text-2xl font-bold mb-6 text-center">Sign In</h1>
-      <form onSubmit={submit}>
-        <InputField label="E-mail" type="email" name="email" value={email} onChange={e=>setEmail(e.target.value)} required/>
-        <InputField label="Password" type="password" name="password" value={pwd} onChange={e=>setPwd(e.target.value)} required/>
-        <button className="w-full py-2 mt-4 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Sign In</button>
-        <p className="text-sm text-center mt-4"><Link to="/forgot-password" className="text-indigo-600 hover:underline">Forgot password?</Link></p>
-        <p className="text-sm text-center mt-1">No account? <Link to="/signup" className="text-indigo-600 hover:underline">Register</Link></p>
-      </form>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md">
+        <div className="mb-8 text-center">
+          <Link to="/" className="inline-block">
+            <h1 className="text-4xl font-bold gradient-text mb-2">CV Manager</h1>
+          </Link>
+          <p className="text-gray-600">Sign in to access your account</p>
+        </div>
+
+        <div className="overflow-hidden rounded-2xl shadow-xl">
+          {/* Card header with gradient */}
+          <div className="gradient-bg p-6">
+            <h2 className="text-2xl font-bold text-white text-center">Welcome Back</h2>
+          </div>
+
+          {/* Card body */}
+          <div className="bg-white p-6 sm:p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="relative">
+                <InputField
+                  label="Email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="your@email.com"
+                  required
+                  icon={<Mail size={20} className="text-gray-400" />}
+                />
+              </div>
+
+              <div className="relative">
+                <InputField
+                  label="Password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  required
+                  icon={<Key size={20} className="text-gray-400" />}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                    Remember me
+                  </label>
+                </div>
+
+                <div className="text-sm">
+                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white gradient-bg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
+              >
+                <span className="flex items-center">
+                  Sign In
+                  <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </button>
+            </form>
+
+            <div className="mt-8 text-center">
+              <p className="text-sm text-gray-600">
+                Don't have an account?{' '}
+                <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Sign up now
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
