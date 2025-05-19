@@ -18,9 +18,20 @@ export default function SignUp() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // ← marked async and added just the fetch + localStorage + navigate
+  // ← only this function changed
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ————— VALIDATION —————
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    // —————————————
 
     // assemble payload
     const payload = {
@@ -29,7 +40,7 @@ export default function SignUp() {
       password: formData.password,
     };
 
-    // call your signup endpoint
+    // call signup endpoint
     const res = await fetch('http://localhost:5000/api/auth/signup', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -136,7 +147,9 @@ export default function SignUp() {
                   required
                 />
                 <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                  I agree to the <a href="#" className="text-indigo-600 hover:text-indigo-500">Terms</a> and <a href="#" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
+                  I agree to the{' '}
+                  <a href="#" className="text-indigo-600 hover:text-indigo-500">Terms</a> and{' '}
+                  <a href="#" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
                 </label>
               </div>
 
