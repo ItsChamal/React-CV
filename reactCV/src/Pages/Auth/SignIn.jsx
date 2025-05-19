@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../../components/InputField';
@@ -16,9 +15,23 @@ export default function SignIn() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // ↓ marked async and replaced with fetch to your signin endpoint
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real app, handle authentication here
+
+    const payload = {
+      email:    formData.email,
+      password: formData.password,
+    };
+
+    const res = await fetch('http://localhost:5000/api/auth/signin', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    const data = await res.json();
+
+    localStorage.setItem('token', data.token);
     navigate('/dashboard');
   };
 

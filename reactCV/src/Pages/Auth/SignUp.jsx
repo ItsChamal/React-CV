@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../../components/InputField';
@@ -19,9 +18,27 @@ export default function SignUp() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // ← marked async and added just the fetch + localStorage + navigate
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real app, handle registration here
+
+    // assemble payload
+    const payload = {
+      name:     `${formData.firstName} ${formData.lastName}`,
+      email:    formData.email,
+      password: formData.password,
+    };
+
+    // call your signup endpoint
+    const res = await fetch('http://localhost:5000/api/auth/signup', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    const data = await res.json();
+
+    // store token and redirect
+    localStorage.setItem('token', data.token);
     navigate('/dashboard');
   };
 
