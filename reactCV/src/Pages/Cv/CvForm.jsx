@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import InputField from '../../components/InputField';
 import AddressInput from '../../components/AddressInput';
-import api from '../../api/axios';
+import api from '../../api/LocalStorage';
 import { validateCv } from '../../utils/validators';
 
 const blank = {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import api from '../api/axios';
+import api from '../api/LocalStorage';
 
 export default function Dashboard() {
   const [total, setTotal] = useState(0);
