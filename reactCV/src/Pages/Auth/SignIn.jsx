@@ -43,7 +43,8 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+
+    <div className="flex-1 flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-block">
@@ -51,13 +52,13 @@ export default function SignIn() {
           </Link>
           <p className="text-gray-600">Sign in to manage your CVs</p>
         </div>
-        
+
         <div className="overflow-hidden rounded-2xl shadow-xl">
           {/* Card header with gradient */}
           <div className="gradient-bg p-6">
             <h2 className="text-2xl font-bold text-white text-center">Sign In</h2>
           </div>
-          
+
           {/* Card body */}
           <div className="bg-white p-6 sm:p-8">
             {error && (
