@@ -50,7 +50,7 @@ export default function App() {
                   <div className="container mx-auto px-6 py-8">
                     <BackButton />
                     <Routes>
-                      <Route path="/" element={<Navigate to="/signin" replace />} />
+                      <Route path="/signin" element={<Navigate to="/signin" replace />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/cvs" element={<CvList />} />
                       <Route path="/cvs/new" element={<CvForm />} />

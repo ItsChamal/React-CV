@@ -26,9 +26,9 @@ export default function SignIn() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      
+
       const data = await res.json();
-      
+
       if (res.ok) {
         // Save token to localStorage
         localStorage.setItem('token', data.token);
@@ -66,7 +66,7 @@ export default function SignIn() {
                 {error}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="relative">
                 <InputField
