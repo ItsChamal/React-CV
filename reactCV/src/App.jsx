@@ -11,12 +11,12 @@ import CvForm from './Pages/Cv/CvForm';
 import CvView from './Pages/Cv/CvView';
 import { ArrowLeft } from 'lucide-react';
 
-// Back button component to use on internal pages
+// Back button component to use on Inside pages
 function BackButton() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Don't show back button on dashboard (main page)
+  // No back button on dashboard (main page)
   if (location.pathname === '/dashboard') {
     return null;
   }

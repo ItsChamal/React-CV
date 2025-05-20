@@ -12,7 +12,7 @@ export default function ResetPassword() {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  // Validate token on component mount
+  // Validate token on component
   useEffect(() => {
     if (!token) {
       setStatus({
