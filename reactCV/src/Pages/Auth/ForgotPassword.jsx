@@ -7,7 +7,6 @@ import { Mail, ArrowRight } from 'lucide-react';
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' });
-  const [resetToken, setResetToken] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,32 +14,27 @@ export default function ForgotPassword() {
       setStatus({ type: 'error', message: 'Email is required' });
       return;
     }
-    
+
     setStatus({ type: 'loading', message: 'Processing your request...' });
-    
+
     try {
       const res = await fetch('http://localhost:5000/api/auth/forgotpassword', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-      
+
       const data = await res.json();
-      
+
       if (res.ok) {
-        setStatus({ 
-          type: 'success', 
-          message: data.msg || 'Check your email for reset link' 
+        setStatus({
+          type: 'success',
+          message: 'Password reset instructions have been sent to your email address.'
         });
-        
-        // For demo purposes only - would be removed in production
-        if (data.resetToken) {
-          setResetToken(data.resetToken);
-        }
       } else {
-        setStatus({ 
-          type: 'error', 
-          message: data.msg || 'Something went wrong' 
+        setStatus({
+          type: 'error',
+          message: data.msg || 'Something went wrong'
         });
       }
     } catch (err) {
@@ -79,19 +73,6 @@ export default function ForgotPassword() {
                 {status.message}
               </div>
             )}
-            
-            {resetToken && (
-              <div className="mb-4 p-3 bg-yellow-50 text-yellow-700 rounded-lg">
-                <p className="font-medium">Demo Mode</p>
-                <p className="text-xs mt-1">Reset token (for demo only):</p>
-                <code className="block mt-1 p-2 bg-gray-100 rounded text-xs overflow-x-auto">
-                  {resetToken}
-                </code>
-                <p className="text-xs mt-2">
-                  In a real application, this token would be sent via email with a link to reset your password.
-                </p>
-              </div>
-            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <InputField
@@ -102,6 +83,7 @@ export default function ForgotPassword() {
                 onChange={(e) => setEmail(e.target.value)}
                 icon={<Mail size={20} className="text-gray-400" />}
                 required
+                placeholder="Enter your email address"
               />
 
               <button

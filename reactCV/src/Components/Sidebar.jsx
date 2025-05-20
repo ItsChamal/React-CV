@@ -24,7 +24,7 @@ export default function Sidebar() {
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-100">
         {!collapsed && <Link to="/dashboard" className="font-bold text-lg text-indigo-600">CV Manager</Link>}
-        <button 
+        <button
           onClick={() => setCollapsed(!collapsed)}
           className="p-1.5 rounded-md hover:bg-gray-100 text-gray-500"
         >
@@ -44,8 +44,8 @@ export default function Sidebar() {
       </nav>
 
       <div className="p-4 border-t border-gray-100">
-        <Link 
-          to="/signin" 
+        <Link
+          to="/signin"
           className={`${getLinkClass("/signin")} ${collapsed ? "justify-center" : ""}`}
         >
           {!collapsed && <span>Logout</span>}

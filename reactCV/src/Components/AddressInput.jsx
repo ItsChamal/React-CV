@@ -12,7 +12,7 @@ export default function AddressInput({ value, onSelect }) {
     }
 
     try {
-      const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, { 
+      const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
         types: ['address'],
         fields: ['formatted_address', 'geometry']
       });

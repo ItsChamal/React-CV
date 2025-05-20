@@ -1,26 +1,28 @@
 
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
-import SignIn from './pages/Auth/SignIn';
-import SignUp from './pages/Auth/SignUp';
-import Dashboard from './pages/Dashboard';
-import CvList from './pages/Cv/CvList';
-import CvForm from './pages/Cv/CvForm';
-import CvView from './pages/Cv/CvView';
+import SignIn from './Pages/Auth/SignIn';
+import SignUp from './Pages/Auth/SignUp';
+import ForgotPassword from './Pages/Auth/ForgotPassword';
+import ResetPassword from './Pages/Auth/ResetPassword';
+import Dashboard from './Pages/Dashboard';
+import CvList from './Pages/Cv/CvList';
+import CvForm from './Pages/Cv/CvForm';
+import CvView from './Pages/Cv/CvView';
 import { ArrowLeft } from 'lucide-react';
 
 // Back button component to use on internal pages
 function BackButton() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Don't show back button on dashboard (main page)
   if (location.pathname === '/dashboard') {
     return null;
   }
-  
+
   return (
-    <button 
+    <button
       onClick={() => navigate(-1)}
       className="mb-6 flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
     >
@@ -37,6 +39,8 @@ export default function App() {
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="*"
             element={

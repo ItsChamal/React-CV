@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../../components/InputField';
@@ -50,13 +49,13 @@ export default function SignIn() {
           <Link to="/" className="inline-block">
             <h1 className="text-4xl font-bold gradient-text mb-2">CV Manager</h1>
           </Link>
-          <p className="text-gray-600">Sign in to access your account</p>
+          <p className="text-gray-600">Sign in to manage your CVs</p>
         </div>
         
         <div className="overflow-hidden rounded-2xl shadow-xl">
           {/* Card header with gradient */}
           <div className="gradient-bg p-6">
-            <h2 className="text-2xl font-bold text-white text-center">Welcome Back</h2>
+            <h2 className="text-2xl font-bold text-white text-center">Sign In</h2>
           </div>
           
           {/* Card body */}
@@ -109,7 +108,7 @@ export default function SignIn() {
                 
                 <div className="text-sm">
                   <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
+                    Forgot your password?
                   </Link>
                 </div>
               </div>
