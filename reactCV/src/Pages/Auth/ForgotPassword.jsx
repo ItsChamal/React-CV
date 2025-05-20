@@ -39,9 +39,9 @@ export default function ForgotPassword() {
       }
     } catch (err) {
       console.error('Error requesting password reset:', err);
-      setStatus({ 
-        type: 'error', 
-        message: 'Server error. Try again later.' 
+      setStatus({
+        type: 'error',
+        message: 'Server error. Try again later.'
       });
     }
   };
