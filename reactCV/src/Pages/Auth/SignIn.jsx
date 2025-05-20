@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../../components/InputField';
@@ -8,6 +9,7 @@ export default function SignIn() {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,24 +17,30 @@ export default function SignIn() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // ↓ marked async and replaced with fetch to your signin endpoint
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
-    const payload = {
-      email:    formData.email,
-      password: formData.password,
-    };
-
-    const res = await fetch('http://localhost:5000/api/auth/signin', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-    });
-    const data = await res.json();
-
-    localStorage.setItem('token', data.token);
-    navigate('/dashboard');
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        // Save token to localStorage
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
+      } else {
+        setError(data.msg || 'Invalid credentials');
+      }
+    } catch (err) {
+      console.error('Error during signin:', err);
+      setError('Server error. Try again later.');
+    }
   };
 
   return (
@@ -44,15 +52,21 @@ export default function SignIn() {
           </Link>
           <p className="text-gray-600">Sign in to access your account</p>
         </div>
-
+        
         <div className="overflow-hidden rounded-2xl shadow-xl">
           {/* Card header with gradient */}
           <div className="gradient-bg p-6">
             <h2 className="text-2xl font-bold text-white text-center">Welcome Back</h2>
           </div>
-
+          
           {/* Card body */}
           <div className="bg-white p-6 sm:p-8">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="relative">
                 <InputField
@@ -66,7 +80,7 @@ export default function SignIn() {
                   icon={<Mail size={20} className="text-gray-400" />}
                 />
               </div>
-
+              
               <div className="relative">
                 <InputField
                   label="Password"
@@ -79,7 +93,7 @@ export default function SignIn() {
                   icon={<Key size={20} className="text-gray-400" />}
                 />
               </div>
-
+              
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <input
@@ -92,14 +106,14 @@ export default function SignIn() {
                     Remember me
                   </label>
                 </div>
-
+                
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
-
+              
               <button
                 type="submit"
                 className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white gradient-bg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
@@ -110,7 +124,7 @@ export default function SignIn() {
                 </span>
               </button>
             </form>
-
+            
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
                 Don't have an account?{' '}

@@ -6,12 +6,12 @@ import { Mail, Key, User, ArrowRight } from 'lucide-react';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,10 +19,43 @@ export default function SignUp() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real app, handle registration here
-    navigate('/dashboard');
+    setError('');
+    
+    // Validate form
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    // Create request payload
+    const userData = {
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      email: formData.email,
+      password: formData.password
+    };
+    
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        // Save token to localStorage
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
+      } else {
+        setError(data.msg || 'Error creating account');
+      }
+    } catch (err) {
+      console.error('Error during signup:', err);
+      setError('Server error. Try again later.');
+    }
   };
 
   return (
@@ -34,15 +67,21 @@ export default function SignUp() {
           </Link>
           <p className="text-gray-600">Create an account to get started</p>
         </div>
-
+        
         <div className="overflow-hidden rounded-2xl shadow-xl">
           {/* Card header with gradient */}
           <div className="gradient-bg p-6">
             <h2 className="text-2xl font-bold text-white text-center">Join Us</h2>
           </div>
-
+          
           {/* Card body */}
           <div className="bg-white p-6 sm:p-8">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative">
@@ -50,7 +89,7 @@ export default function SignUp() {
                     label="First Name"
                     type="text"
                     name="firstName"
-                    value={formData.firstName}
+                    value={formData.firstName || ''}
                     onChange={handleChange}
                     placeholder="John"
                     required
@@ -62,7 +101,7 @@ export default function SignUp() {
                     label="Last Name"
                     type="text"
                     name="lastName"
-                    value={formData.lastName}
+                    value={formData.lastName || ''}
                     onChange={handleChange}
                     placeholder="Doe"
                     required
@@ -70,7 +109,7 @@ export default function SignUp() {
                   />
                 </div>
               </div>
-
+              
               <div className="relative">
                 <InputField
                   label="Email"
@@ -83,7 +122,7 @@ export default function SignUp() {
                   icon={<Mail size={20} className="text-gray-400" />}
                 />
               </div>
-
+              
               <div className="relative">
                 <InputField
                   label="Password"
@@ -96,7 +135,7 @@ export default function SignUp() {
                   icon={<Key size={20} className="text-gray-400" />}
                 />
               </div>
-
+              
               <div className="relative">
                 <InputField
                   label="Confirm Password"
@@ -109,7 +148,7 @@ export default function SignUp() {
                   icon={<Key size={20} className="text-gray-400" />}
                 />
               </div>
-
+              
               <div className="flex items-center">
                 <input
                   id="terms"
@@ -122,7 +161,7 @@ export default function SignUp() {
                   I agree to the <a href="#" className="text-indigo-600 hover:text-indigo-500">Terms</a> and <a href="#" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
                 </label>
               </div>
-
+              
               <button
                 type="submit"
                 className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white gradient-bg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
@@ -133,7 +172,7 @@ export default function SignUp() {
                 </span>
               </button>
             </form>
-
+            
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}

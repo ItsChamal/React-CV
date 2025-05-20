@@ -8,7 +8,6 @@ function delay(res) {
 function read() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 }
-
 function write(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
