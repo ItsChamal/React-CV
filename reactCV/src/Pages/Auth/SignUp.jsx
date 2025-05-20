@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../../components/InputField';
@@ -18,38 +19,9 @@ export default function SignUp() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // ← only this function changed
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // ————— VALIDATION —————
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      alert('Please enter a valid email address');
-      return;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-    // —————————————
-
-    // assemble payload
-    const payload = {
-      name:     `${formData.firstName} ${formData.lastName}`,
-      email:    formData.email,
-      password: formData.password,
-    };
-
-    // call signup endpoint
-    const res = await fetch('http://localhost:5000/api/auth/signup', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-    });
-    const data = await res.json();
-
-    // store token and redirect
-    localStorage.setItem('token', data.token);
+    // In a real app, handle registration here
     navigate('/dashboard');
   };
 
@@ -147,9 +119,7 @@ export default function SignUp() {
                   required
                 />
                 <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                  I agree to the{' '}
-                  <a href="#" className="text-indigo-600 hover:text-indigo-500">Terms</a> and{' '}
-                  <a href="#" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
+                  I agree to the <a href="#" className="text-indigo-600 hover:text-indigo-500">Terms</a> and <a href="#" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
                 </label>
               </div>
 

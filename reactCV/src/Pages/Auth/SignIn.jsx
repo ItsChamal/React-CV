@@ -15,28 +15,15 @@ export default function SignIn() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // ← only this function changed
+  // ↓ marked async and replaced with fetch to your signin endpoint
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ————— VALIDATION —————
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      alert('Please enter a valid email address');
-      return;
-    }
-    if (!formData.password) {
-      alert('Please enter your password');
-      return;
-    }
-    // —————————————
-
-    // assemble payload
     const payload = {
       email:    formData.email,
       password: formData.password,
     };
 
-    // call signin endpoint
     const res = await fetch('http://localhost:5000/api/auth/signin', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,7 +31,6 @@ export default function SignIn() {
     });
     const data = await res.json();
 
-    // store token and redirect
     localStorage.setItem('token', data.token);
     navigate('/dashboard');
   };
