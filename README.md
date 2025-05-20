@@ -3,9 +3,6 @@
 
 A single-page React application that lets users **create, edit, view and delete CVs locally** while handling **authentication (Sign Up / Sign In / Forgot & Reset Password)** against a separate Express + MongoDB API.
 
-<p align="center">
-  <img src="public/cover.png" width="650" alt="CV Manager screenshot">
-</p>
 
 ---
 
